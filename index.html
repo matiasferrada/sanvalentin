@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>¿Querés ser mi San Valentín? 💘</title>
+  <style>
+    :root{
+      --bg1:#ff4d8d;
+      --bg2:#b43cff;
+      --paper:#f7efe6;
+      --ink:#3b2b25;
+      --accent:#ff2f6d;
+      --shadow: 0 16px 50px rgba(0,0,0,.25);
+      --btn: rgba(255,255,255,.15);
+      --btnb: rgba(255,255,255,.22);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:#fff;
+      overflow:hidden;
+      background:
+        radial-gradient(1200px 700px at 10% 10%, rgba(255,255,255,.35), transparent 55%),
+        radial-gradient(900px 600px at 90% 20%, rgba(255,255,255,.22), transparent 55%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+    }
+
+    .bokeh{
+      position:fixed; inset:0; pointer-events:none; opacity:.22;
+      background:
+        radial-gradient(14px 14px at 10% 20%, #fff, transparent 60%),
+        radial-gradient(18px 18px at 30% 40%, #fff, transparent 60%),
+        radial-gradient(10px 10px at 70% 25%, #fff, transparent 60%),
+        radial-gradient(22px 22px at 85% 50%, #fff, transparent 60%),
+        radial-gradient(16px 16px at 40% 80%, #fff, transparent 60%),
+        radial-gradient(12px 12px at 60% 70%, #fff, transparent 60%);
+      animation: floatBg 8s ease-in-out infinite alternate;
+    }
+    @keyframes floatBg{ from{transform:translateY(0)} to{transform:translateY(-12px)} }
+
+    .falling{ position:fixed; inset:0; pointer-events:none; overflow:hidden; }
+
+    /* pantallas */
+    .screen{
+      width:min(980px, 92vw);
+      min-height: min(78vh, 720px);
+      display:none;
+      place-items:center;
+      text-align:center;
+      position:relative;
+      padding:22px;
+    }
+    .screen.active{ display:grid; }
+
+    /* SCREEN 1 */
+    .hero{
+      width:min(720px, 92vw);
+      padding:26px 20px;
+      border-radius:26px;
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.16);
+      box-shadow: 0 18px 60px rgba(0,0,0,.22);
+      backdrop-filter: blur(8px);
+    }
+    .hero h1{
+      margin:0 0 10px 0;
+      font-size: clamp(24px, 4.4vw, 44px);
+      letter-spacing:.2px;
+    }
+    .hero p{
+      margin:0 0 18px 0;
+      opacity:.92;
+      font-size: clamp(14px, 2.2vw, 18px);
+      line-height:1.45;
+    }
+    .btns{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+    button{
+      cursor:pointer;
+      border: 1px solid rgba(255,255,255,.22);
+      background: var(--btn);
+      color:#fff;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-weight:700;
+      font-size: 16px;
+      transition: transform .08s ease, background .2s ease, border-color .2s ease;
+      min-width: 150px;
+    }
+    button:hover{ background: var(--btnb); }
+    button:active{ transform: scale(.98); }
+    .primary{
+      background: rgba(255,255,255,.22);
+      border-color: rgba(255,255,255,.32);
+    }
+
+    /* SCREEN 2 (carta) */
+    .card{
+      width:min(980px, 92vw);
+      aspect-ratio: 16/9;
+      background:var(--paper);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+      padding:24px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:18px;
+      color: var(--ink);
+    }
+    .paper-noise{
+      position:absolute; inset:-50px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(0,0,0,.03), transparent 60%),
+        radial-gradient(circle at 80% 40%, rgba(0,0,0,.03), transparent 60%),
+        radial-gradient(circle at 40% 80%, rgba(0,0,0,.03), transparent 60%);
+      transform: rotate(2deg);
+      pointer-events:none;
+    }
+    .left{
+      position:relative;
+      padding:18px 18px 12px 18px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      z-index:2;
+    }
+    .left h2{
+      margin:0;
+      font-size: clamp(18px, 2.8vw, 28px);
+      letter-spacing:.2px;
+    }
+    .type{
+      min-height: 7.5em;
+      line-height:1.6;
+      font-size: clamp(14px, 2.1vw, 18px);
+      white-space:pre-wrap;
+    }
+    .cursor{
+      display:inline-block;
+      width:10px;
+      margin-left:3px;
+      background:rgba(59,43,37,.55);
+      animation: blink .9s steps(1) infinite;
+      transform: translateY(2px);
+    }
+    @keyframes blink{ 50%{opacity:0} }
+
+    .counter{
+      margin-top:auto;
+      padding-top:12px;
+      border-top: 1px solid rgba(0,0,0,.12);
+      font-size: clamp(13px, 1.8vw, 16px);
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:baseline;
+    }
+    .counter b{
+      font-size: clamp(16px, 2.4vw, 20px);
+      color:var(--accent);
+    }
+    .topbar{
+      position:absolute;
+      right:14px;
+      top:14px;
+      display:flex;
+      gap:10px;
+      z-index:3;
+    }
+    .chip{
+      font-size:12px;
+      padding:8px 10px;
+      border-radius:999px;
+      background: rgba(0,0,0,.06);
+      border: 1px solid rgba(0,0,0,.08);
+      user-select:none;
+    }
+    .chip a{ color:inherit; text-decoration:none; }
+    .chipBtn{
+      cursor:pointer;
+      border:1px solid rgba(0,0,0,.10);
+      background: rgba(0,0,0,.06);
+    }
+
+    .right{
+      position:relative;
+      display:grid;
+      place-items:center;
+      z-index:2;
+    }
+    .scene{
+      width: 100%;
+      height: 100%;
+      position:relative;
+      display:grid;
+      place-items:center;
+      transform: translateY(8px);
+    }
+    .ground{
+      position:absolute;
+      bottom:6%;
+      width: 92%;
+      height: 16px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.06);
+    }
+    .trunk{
+      position:absolute;
+      bottom:10%;
+      width: clamp(22px, 2.8vw, 32px);
+      height: 46%;
+      background: linear-gradient(#6a3f28, #4b2b1d);
+      border-radius: 16px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.12);
+      transform: translateX(-4px) skewX(-3deg);
+    }
+    .heart-canopy{
+      position:absolute;
+      bottom:44%;
+      width: min(360px, 34vw);
+      aspect-ratio: 1/1;
+      filter: drop-shadow(0 12px 18px rgba(0,0,0,.12));
+    }
+    .leaf{
+      position:absolute;
+      left:50%;
+      top:50%;
+      width: 18px;
+      height: 18px;
+      transform: translate(-50%,-50%) rotate(45deg);
+      border-radius: 4px;
+      background: var(--c, #ff2f6d);
+      opacity: .92;
+      animation: pop .9s ease both;
+      box-shadow: 0 2px 0 rgba(0,0,0,.05);
+    }
+    .leaf::before,.leaf::after{
+      content:"";
+      position:absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: inherit;
+    }
+    .leaf::before{ left:-9px; top:0; }
+    .leaf::after{ left:0; top:-9px; }
+    @keyframes pop{
+      from{ transform: translate(-50%,-50%) rotate(45deg) scale(.3); opacity:0 }
+      to{ transform: translate(-50%,-50%) rotate(45deg) scale(1); opacity:.92 }
+    }
+
+    .drop{
+      position:absolute;
+      top:-40px;
+      width: 14px;
+      height: 14px;
+      transform: rotate(45deg);
+      border-radius: 4px;
+      opacity:.9;
+      animation: fall linear forwards;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.18));
+    }
+    .drop::before,.drop::after{
+      content:"";
+      position:absolute;
+      width: 14px;
+      height: 14px;
+      border-radius:50%;
+      background:inherit;
+    }
+    .drop::before{ left:-7px; top:0 }
+    .drop::after{ left:0; top:-7px }
+
+    @keyframes fall{
+      to{ transform: translateY(110vh) rotate(45deg); opacity:0; }
+    }
+
+    @media (max-width: 860px){
+      .card{ grid-template-columns: 1fr; aspect-ratio:auto; }
+      .right{ min-height: 340px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bokeh"></div>
+  <div class="falling" id="falling"></div>
+
+  <!-- SCREEN 1 -->
+  <section class="screen active" id="screen1">
+    <div class="hero">
+      <h1 id="qTitle">¿Querés ser mi San Valentín? 💘</h1>
+      <p id="qSub">Abrilo con auriculares si querés más magia ✨</p>
+
+      <div class="btns">
+        <button class="primary" id="btnYes">Sí 💖</button>
+        <button id="btnObvio">Obvio 😌</button>
+        <button id="btnNo">No 😭</button>
+      </div>
+
+      <p style="margin-top:14px; opacity:.9; font-size:13px">
+        Tip: si tocás “No”, se pone juguetón 😅
+      </p>
+    </div>
+  </section>
+
+  <!-- SCREEN 2 -->
+  <section class="screen" id="screen2">
+    <main class="card">
+      <div class="paper-noise"></div>
+
+      <div class="topbar">
+        <div class="chip" id="chipName">💌 Para: —</div>
+        <div class="chip chipBtn" id="musicBtn">🔊 Activar música</div>
+      </div>
+
+      <section class="left">
+        <h2 id="title">Para el amor de mi vida:</h2>
+        <div class="type" id="typed"></div>
+        <div class="counter">
+          <span>Mi amor por ti comenzó hace…</span>
+          <b id="time">--</b>
+        </div>
+      </section>
+
+      <section class="right">
+        <div class="scene">
+          <div class="heart-canopy" id="canopy"></div>
+          <div class="trunk"></div>
+          <div class="ground"></div>
+        </div>
+      </section>
+    </main>
+  </section>
+
+  <script>
+    // =========================
+    // CONFIG (EDITÁ ACÁ)
+    // =========================
+    const NOMBRE = "Rocío";
+    const START_DATE = "2025-02-14T00:00:00-03:00"; // fecha inicio (Argentina -03)
+    const MENSAJE = [
+      `Si pudiera elegir un lugar seguro, sería a tu lado, ${NOMBRE}.`,
+      "",
+      "Gracias por tu sonrisa, por tu paciencia, por ser mi refugio.",
+      "",
+      "Te elijo hoy, mañana y siempre. 💖"
+    ].join("\n");
+
+    // Texto de pantalla 1 (opcional)
+    document.getElementById("qSub").textContent = `Rocío, tengo algo para vos… 😌`;
+
+    // =========================
+    // Navegación pantallas
+    // =========================
+    const s1 = document.getElementById("screen1");
+    const s2 = document.getElementById("screen2");
+
+    function goToLetter(){
+      s1.classList.remove("active");
+      s2.classList.add("active");
+      startEverythingOnce();
+    }
+
+    // Botón "No" se escapa (clásico)
+    const btnNo = document.getElementById("btnNo");
+    btnNo.addEventListener("mouseenter", () => {
+      const dx = (Math.random()*220 - 110);
+      const dy = (Math.random()*160 - 80);
+      btnNo.style.transform = `translate(${dx}px, ${dy}px)`;
+    });
+    btnNo.addEventListener("click", () => {
+      document.getElementById("qTitle").textContent = "Ey 😭 no vale decir que no";
+    });
+
+    document.getElementById("btnYes").addEventListener("click", goToLetter);
+    document.getElementById("btnObvio").addEventListener("click", goToLetter);
+
+    // =========================
+    // Carta: typewriter + contador + árbol + corazones
+    // =========================
+    let started = false;
+    function startEverythingOnce(){
+      if(started) return;
+      started = true;
+
+      // Nombre arriba
+      document.getElementById("chipName").textContent = `💌 Para: ${NOMBRE}`;
+
+      // Typewriter
+      const typedEl = document.getElementById("typed");
+      const cursor = document.createElement("span");
+      cursor.className = "cursor";
+      typedEl.appendChild(cursor);
+
+      let i = 0;
+      function type(){
+        if(i <= MENSAJE.length){
+          typedEl.textContent = MENSAJE.slice(0,i);
+          typedEl.appendChild(cursor);
+          const ch = MENSAJE[i] || "";
+          i++;
+          const delay = ch === "\n" ? 420 : (ch === "," ? 220 : 28);
+          setTimeout(type, delay);
+        }
+      }
+      type();
+
+      // Counter
+      const start = new Date(START_DATE).getTime();
+      const timeEl = document.getElementById("time");
+      const pad = (n)=> String(n).padStart(2,"0");
+
+      function tick(){
+        const now = Date.now();
+        let diff = Math.max(0, now - start);
+
+        const s = Math.floor(diff/1000);
+        const days = Math.floor(s / 86400);
+        const hours = Math.floor((s % 86400) / 3600);
+        const mins = Math.floor((s % 3600) / 60);
+        const secs = s % 60;
+
+        timeEl.textContent = `${days} días ${pad(hours)} horas ${pad(mins)} minutos ${pad(secs)} segundos`;
+      }
+      tick();
+      setInterval(tick, 1000);
+
+      // Árbol copa corazón
+      const canopy = document.getElementById("canopy");
+      function heartXY(t){
+        const x = 16 * Math.pow(Math.sin(t), 3);
+        const y = 13*Math.cos(t) - 5*Math.cos(2*t) - 2*Math.cos(3*t) - Math.cos(4*t);
+        return {x, y};
+      }
+      function addLeaf(x, y, color, delay){
+        const leaf = document.createElement("div");
+        leaf.className = "leaf";
+        leaf.style.setProperty("--c", color);
+        leaf.style.left = `${50 + x}%`;
+        leaf.style.top = `${50 - y}%`;
+        leaf.style.animationDelay = `${delay}ms`;
+        leaf.style.opacity = (0.75 + Math.random()*0.25).toFixed(2);
+        leaf.style.width = leaf.style.height = `${12 + Math.random()*16}px`;
+        canopy.appendChild(leaf);
+      }
+
+      const colors = ["#ff2f6d","#ff4d8d","#ff6aa8","#ff2a3a","#ffd1dc"];
+      let k = 0;
+
+      // contorno
+      for(let t=0; t<Math.PI*2; t+=0.08){
+        const p = heartXY(t);
+        addLeaf(p.x*2.1, p.y*1.8, colors[Math.floor(Math.random()*colors.length)], k*18);
+        k++;
+      }
+      // relleno
+      for(let n=0; n<140; n++){
+        const t = Math.random()*Math.PI*2;
+        const p = heartXY(t);
+        const r = Math.random();
+        addLeaf(p.x*2.1*r, p.y*1.8*r, colors[Math.floor(Math.random()*colors.length)], k*10);
+        k++;
+      }
+
+      // falling hearts (global)
+      const falling = document.getElementById("falling");
+      function spawnDrop(){
+        const d = document.createElement("div");
+        d.className = "drop";
+        const size = 8 + Math.random()*14;
+        d.style.width = d.style.height = size + "px";
+        d.style.left = (Math.random()*100) + "vw";
+
+        const hue = Math.random();
+        d.style.background = hue < .25 ? "#ff2f6d" : hue < .5 ? "#ff4d8d" : hue < .75 ? "#ff6aa8" : "#ffd1dc";
+
+        const dur = 4.5 + Math.random()*4.5;
+        d.style.animationDuration = dur + "s";
+        falling.appendChild(d);
+
+        // drift
+        const sway = (Math.random()*120 - 60);
+        d.animate([
+          { transform:`translate(0,0) rotate(45deg)` },
+          { transform:`translate(${sway}px,110vh) rotate(45deg)` }
+        ], { duration: dur*1000, easing:"linear", fill:"forwards" });
+
+        setTimeout(()=> d.remove(), (dur+0.6)*1000);
+      }
+      setInterval(spawnDrop, 180);
+
+      // Música (beep suave)
+      setupMusic();
+    }
+
+    // =========================
+    // Música (opcional, sin archivos)
+    // =========================
+    let audioCtx, playing=false, osc, gain;
+    const musicBtn = document.getElementById("musicBtn");
+
+    function setupMusic(){
+      musicBtn.addEventListener("click", async () => {
+        if(!audioCtx){
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          gain = audioCtx.createGain();
+          gain.gain.value = 0.0001;
+          gain.connect(audioCtx.destination);
+
+          osc = audioCtx.createOscillator();
+          osc.type = "sine";
+          osc.frequency.value = 523.25; // Do
+          osc.connect(gain);
+          osc.start();
+        }
+        if(audioCtx.state === "suspended") await audioCtx.resume();
+
+        playing = !playing;
+        musicBtn.textContent = playing ? "🔇 Pausar música" : "🔊 Activar música";
+
+        // fade suave
+        const now = audioCtx.currentTime;
+        gain.gain.cancelScheduledValues(now);
+        gain.gain.setValueAtTime(gain.gain.value, now);
+        gain.gain.linearRampToValueAtTime(playing ? 0.03 : 0.0001, now + 0.3);
+      });
+    }
+  </script>
+</body>
+</html>
