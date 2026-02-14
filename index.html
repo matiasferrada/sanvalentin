@@ -4,16 +4,23 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>¿Querés ser mi San Valentín? 💘</title>
+
+  <!-- Tipos lindos -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
     :root{
-      --bg1:#ff4d8d;
-      --bg2:#b43cff;
-      --paper:#f7efe6;
-      --ink:#3b2b25;
+      --bg1:#ff3b7a;
+      --bg2:#a33cff;
+      --paper:#fbf3ea;
+      --ink:#2e1f1a;
+      --muted: rgba(46,31,26,.72);
       --accent:#ff2f6d;
-      --shadow: 0 16px 50px rgba(0,0,0,.25);
-      --btn: rgba(255,255,255,.15);
-      --btnb: rgba(255,255,255,.22);
+      --shadow: 0 18px 70px rgba(0,0,0,.28);
+      --glass: rgba(0,0,0,.18);
+      --glassBorder: rgba(255,255,255,.18);
     }
     *{box-sizing:border-box}
     body{
@@ -21,113 +28,210 @@
       min-height:100vh;
       display:grid;
       place-items:center;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      color:#fff;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
       overflow:hidden;
+      color:#fff;
       background:
-        radial-gradient(1200px 700px at 10% 10%, rgba(255,255,255,.35), transparent 55%),
-        radial-gradient(900px 600px at 90% 20%, rgba(255,255,255,.22), transparent 55%),
+        radial-gradient(1000px 650px at 12% 15%, rgba(255,255,255,.35), transparent 55%),
+        radial-gradient(900px 650px at 88% 22%, rgba(255,255,255,.22), transparent 55%),
+        radial-gradient(800px 550px at 45% 85%, rgba(255,177,204,.35), transparent 60%),
         linear-gradient(135deg, var(--bg1), var(--bg2));
     }
 
+    /* Bokeh + glow */
     .bokeh{
       position:fixed; inset:0; pointer-events:none; opacity:.22;
       background:
-        radial-gradient(14px 14px at 10% 20%, #fff, transparent 60%),
-        radial-gradient(18px 18px at 30% 40%, #fff, transparent 60%),
-        radial-gradient(10px 10px at 70% 25%, #fff, transparent 60%),
-        radial-gradient(22px 22px at 85% 50%, #fff, transparent 60%),
-        radial-gradient(16px 16px at 40% 80%, #fff, transparent 60%),
-        radial-gradient(12px 12px at 60% 70%, #fff, transparent 60%);
+        radial-gradient(16px 16px at 12% 18%, #fff, transparent 60%),
+        radial-gradient(20px 20px at 30% 42%, #fff, transparent 60%),
+        radial-gradient(12px 12px at 70% 25%, #fff, transparent 60%),
+        radial-gradient(24px 24px at 85% 50%, #fff, transparent 60%),
+        radial-gradient(18px 18px at 40% 82%, #fff, transparent 60%),
+        radial-gradient(14px 14px at 62% 72%, #fff, transparent 60%);
       animation: floatBg 8s ease-in-out infinite alternate;
+      filter: blur(.2px);
+    }
+    .glow{
+      position:fixed; inset:-40%;
+      pointer-events:none;
+      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.12), transparent 55%);
+      animation: breathe 5.5s ease-in-out infinite alternate;
+      mix-blend-mode: screen;
     }
     @keyframes floatBg{ from{transform:translateY(0)} to{transform:translateY(-12px)} }
+    @keyframes breathe{ from{transform:scale(1)} to{transform:scale(1.06)} }
 
     .falling{ position:fixed; inset:0; pointer-events:none; overflow:hidden; }
+    .burst{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
 
-    /* pantallas */
     .screen{
-      width:min(980px, 92vw);
-      min-height: min(78vh, 720px);
+      width:min(1020px, 92vw);
+      min-height:min(80vh, 740px);
       display:none;
       place-items:center;
       text-align:center;
-      position:relative;
       padding:22px;
+      position:relative;
     }
     .screen.active{ display:grid; }
+    .enter{ animation: enter .55s ease both; }
+    @keyframes enter{
+      from{ opacity:0; transform: translateY(14px) scale(.985); }
+      to{ opacity:1; transform: translateY(0) scale(1); }
+    }
 
     /* SCREEN 1 */
     .hero{
-      width:min(720px, 92vw);
-      padding:26px 20px;
-      border-radius:26px;
-      background: rgba(0,0,0,.18);
-      border: 1px solid rgba(255,255,255,.16);
-      box-shadow: 0 18px 60px rgba(0,0,0,.22);
-      backdrop-filter: blur(8px);
+      width:min(760px, 92vw);
+      padding:28px 22px;
+      border-radius:28px;
+      background: var(--glass);
+      border: 1px solid var(--glassBorder);
+      box-shadow: 0 22px 75px rgba(0,0,0,.22);
+      backdrop-filter: blur(10px);
+      position:relative;
+      overflow:hidden;
+    }
+    .hero::before{
+      content:"";
+      position:absolute; inset:-80px;
+      background:
+        radial-gradient(circle at 20% 25%, rgba(255,255,255,.20), transparent 55%),
+        radial-gradient(circle at 80% 55%, rgba(255,255,255,.12), transparent 60%);
+      transform: rotate(8deg);
+      pointer-events:none;
     }
     .hero h1{
       margin:0 0 10px 0;
-      font-size: clamp(24px, 4.4vw, 44px);
+      font-family: "Playfair Display", serif;
+      font-size: clamp(26px, 4.8vw, 52px);
       letter-spacing:.2px;
     }
     .hero p{
-      margin:0 0 18px 0;
+      margin:0 0 16px 0;
       opacity:.92;
       font-size: clamp(14px, 2.2vw, 18px);
-      line-height:1.45;
+      line-height:1.5;
     }
+
     .btns{
       display:flex;
       gap:12px;
       justify-content:center;
       flex-wrap:wrap;
       margin-top:14px;
+      position:relative;
+      z-index:2;
     }
     button{
       cursor:pointer;
       border: 1px solid rgba(255,255,255,.22);
-      background: var(--btn);
+      background: rgba(255,255,255,.14);
       color:#fff;
-      padding: 12px 16px;
-      border-radius: 14px;
-      font-weight:700;
+      padding: 12px 18px;
+      border-radius: 16px;
+      font-weight:800;
       font-size: 16px;
-      transition: transform .08s ease, background .2s ease, border-color .2s ease;
-      min-width: 150px;
+      transition: transform .08s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+      min-width: 160px;
+      position:relative;
+      overflow:hidden;
     }
-    button:hover{ background: var(--btnb); }
+    button:hover{
+      background: rgba(255,255,255,.20);
+      box-shadow: 0 10px 30px rgba(0,0,0,.18);
+    }
     button:active{ transform: scale(.98); }
     .primary{
-      background: rgba(255,255,255,.22);
-      border-color: rgba(255,255,255,.32);
+      background: rgba(255,255,255,.26);
+      border-color: rgba(255,255,255,.34);
     }
 
-    /* SCREEN 2 (carta) */
+    .tools{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      margin-top:12px;
+      flex-wrap:wrap;
+      position:relative;
+      z-index:2;
+    }
+    .chip{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:9px 12px;
+      border-radius:999px;
+      background: rgba(0,0,0,.16);
+      border: 1px solid rgba(255,255,255,.14);
+      font-size:13px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .tiny{
+      margin-top:14px;
+      opacity:.9;
+      font-size:13px;
+      position:relative;
+      z-index:2;
+    }
+
+    /* SCREEN 2 card */
     .card{
-      width:min(980px, 92vw);
+      width:min(1020px, 92vw);
       aspect-ratio: 16/9;
       background:var(--paper);
-      border-radius:28px;
+      border-radius:30px;
       box-shadow:var(--shadow);
       position:relative;
       overflow:hidden;
-      padding:24px;
+      padding:26px;
       display:grid;
-      grid-template-columns: 1.05fr .95fr;
+      grid-template-columns: 1.06fr .94fr;
       gap:18px;
       color: var(--ink);
     }
     .paper-noise{
-      position:absolute; inset:-50px;
+      position:absolute; inset:-60px;
       background:
         radial-gradient(circle at 20% 20%, rgba(0,0,0,.03), transparent 60%),
-        radial-gradient(circle at 80% 40%, rgba(0,0,0,.03), transparent 60%),
-        radial-gradient(circle at 40% 80%, rgba(0,0,0,.03), transparent 60%);
+        radial-gradient(circle at 80% 45%, rgba(0,0,0,.03), transparent 60%),
+        radial-gradient(circle at 40% 82%, rgba(0,0,0,.03), transparent 60%);
       transform: rotate(2deg);
       pointer-events:none;
     }
+    .ribbon{
+      position:absolute;
+      top:-26px; left:-70px;
+      width: 240px;
+      height: 70px;
+      background: linear-gradient(135deg, rgba(255,47,109,.9), rgba(163,60,255,.85));
+      transform: rotate(-12deg);
+      filter: drop-shadow(0 18px 22px rgba(0,0,0,.18));
+      opacity:.95;
+    }
+    .topbar{
+      position:absolute;
+      right:16px;
+      top:16px;
+      display:flex;
+      gap:10px;
+      z-index:3;
+    }
+    .chip2{
+      font-size:12px;
+      padding:9px 11px;
+      border-radius:999px;
+      background: rgba(0,0,0,.06);
+      border: 1px solid rgba(0,0,0,.08);
+      user-select:none;
+    }
+    .chipBtn2{
+      cursor:pointer;
+      border:1px solid rgba(0,0,0,.10);
+      background: rgba(0,0,0,.06);
+    }
+
     .left{
       position:relative;
       padding:18px 18px 12px 18px;
@@ -138,20 +242,23 @@
     }
     .left h2{
       margin:0;
-      font-size: clamp(18px, 2.8vw, 28px);
+      font-family:"Playfair Display", serif;
+      font-size: clamp(18px, 2.9vw, 30px);
       letter-spacing:.2px;
     }
     .type{
-      min-height: 7.5em;
-      line-height:1.6;
+      min-height: 7.8em;
+      line-height:1.65;
       font-size: clamp(14px, 2.1vw, 18px);
       white-space:pre-wrap;
+      color: var(--muted);
     }
+    .type strong{ color: var(--ink); }
     .cursor{
       display:inline-block;
       width:10px;
       margin-left:3px;
-      background:rgba(59,43,37,.55);
+      background:rgba(46,31,26,.55);
       animation: blink .9s steps(1) infinite;
       transform: translateY(2px);
     }
@@ -166,32 +273,11 @@
       flex-wrap:wrap;
       gap:10px;
       align-items:baseline;
+      color: rgba(46,31,26,.85);
     }
     .counter b{
       font-size: clamp(16px, 2.4vw, 20px);
       color:var(--accent);
-    }
-    .topbar{
-      position:absolute;
-      right:14px;
-      top:14px;
-      display:flex;
-      gap:10px;
-      z-index:3;
-    }
-    .chip{
-      font-size:12px;
-      padding:8px 10px;
-      border-radius:999px;
-      background: rgba(0,0,0,.06);
-      border: 1px solid rgba(0,0,0,.08);
-      user-select:none;
-    }
-    .chip a{ color:inherit; text-decoration:none; }
-    .chipBtn{
-      cursor:pointer;
-      border:1px solid rgba(0,0,0,.10);
-      background: rgba(0,0,0,.06);
     }
 
     .right{
@@ -200,39 +286,82 @@
       place-items:center;
       z-index:2;
     }
+
+    /* ====== ÁRBOL PREMIUM ====== */
     .scene{
       width: 100%;
       height: 100%;
       position:relative;
       display:grid;
       place-items:center;
-      transform: translateY(8px);
+      transform: translateY(10px);
     }
+
     .ground{
       position:absolute;
-      bottom:6%;
+      bottom:5.5%;
       width: 92%;
-      height: 16px;
+      height: 18px;
       border-radius: 999px;
-      background: rgba(0,0,0,.06);
+      background: radial-gradient(closest-side, rgba(0,0,0,.10), rgba(0,0,0,.04));
+      filter: blur(.2px);
     }
+
     .trunk{
       position:absolute;
       bottom:10%;
-      width: clamp(22px, 2.8vw, 32px);
-      height: 46%;
-      background: linear-gradient(#6a3f28, #4b2b1d);
-      border-radius: 16px;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.12);
+      width: clamp(22px, 2.8vw, 34px);
+      height: 48%;
+      border-radius: 18px;
       transform: translateX(-4px) skewX(-3deg);
+      background: linear-gradient(180deg, #7b4a2f, #4b2b1d);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.12),
+        inset -6px 0 10px rgba(0,0,0,.18),
+        0 18px 22px rgba(0,0,0,.10);
+      overflow:hidden;
     }
+    .trunk::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          rgba(255,255,255,.06) 0px,
+          rgba(255,255,255,.06) 1px,
+          transparent 1px,
+          transparent 6px
+        );
+      opacity:.35;
+      mix-blend-mode: overlay;
+    }
+    .trunk::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:16%;
+      width: 170%;
+      height: 12%;
+      transform: translateX(-50%) rotate(-10deg);
+      background: rgba(255,255,255,.10);
+      border-radius: 999px;
+      filter: blur(.2px);
+    }
+
     .heart-canopy{
       position:absolute;
       bottom:44%;
-      width: min(360px, 34vw);
+      width: min(380px, 36vw);
       aspect-ratio: 1/1;
-      filter: drop-shadow(0 12px 18px rgba(0,0,0,.12));
+      filter: drop-shadow(0 16px 20px rgba(0,0,0,.14));
+      animation: canopySway 6.5s ease-in-out infinite alternate;
+      transform-origin: 50% 90%;
     }
+    @keyframes canopySway{
+      from{ transform: rotate(-.9deg) translateY(1px); }
+      to  { transform: rotate(.9deg) translateY(-1px); }
+    }
+
     .leaf{
       position:absolute;
       left:50%;
@@ -240,11 +369,16 @@
       width: 18px;
       height: 18px;
       transform: translate(-50%,-50%) rotate(45deg);
-      border-radius: 4px;
-      background: var(--c, #ff2f6d);
-      opacity: .92;
+      border-radius: 5px;
+      background:
+        radial-gradient(circle at 30% 28%, rgba(255,255,255,.55), transparent 35%),
+        linear-gradient(135deg, rgba(255,255,255,.15), transparent 45%),
+        var(--c, #ff2f6d);
+      opacity: .94;
       animation: pop .9s ease both;
-      box-shadow: 0 2px 0 rgba(0,0,0,.05);
+      box-shadow:
+        0 3px 0 rgba(0,0,0,.05),
+        0 0 22px rgba(255,47,109,.22);
     }
     .leaf::before,.leaf::after{
       content:"";
@@ -256,11 +390,49 @@
     }
     .leaf::before{ left:-9px; top:0; }
     .leaf::after{ left:0; top:-9px; }
+
     @keyframes pop{
-      from{ transform: translate(-50%,-50%) rotate(45deg) scale(.3); opacity:0 }
-      to{ transform: translate(-50%,-50%) rotate(45deg) scale(1); opacity:.92 }
+      from{ transform: translate(-50%,-50%) rotate(45deg) scale(.2); opacity:0 }
+      to{ transform: translate(-50%,-50%) rotate(45deg) scale(1); opacity:.94 }
     }
 
+    .twinkle{
+      position:absolute;
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(255,255,255,.95), rgba(255,255,255,.35) 55%, transparent 70%);
+      filter: drop-shadow(0 0 12px rgba(255,255,255,.35));
+      opacity: .0;
+      animation: twinkle 2.4s ease-in-out infinite;
+      pointer-events:none;
+    }
+    @keyframes twinkle{
+      0%,100%{ opacity:0; transform: scale(.8); }
+      45%{ opacity:.95; transform: scale(1.2); }
+      70%{ opacity:.30; transform: scale(1); }
+    }
+
+    .spark{
+      position:absolute;
+      width: 10px;
+      height: 10px;
+      transform: translate(-50%,-50%);
+      opacity: 0;
+      pointer-events:none;
+    }
+    .spark::before, .spark::after{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(circle, rgba(255,255,255,.9), transparent 60%);
+      border-radius: 999px;
+    }
+    .spark::after{
+      transform: rotate(45deg) scale(.9);
+      opacity:.7;
+    }
+
+    /* Corazones (para caída y burst) */
     .drop{
       position:absolute;
       top:-40px;
@@ -269,8 +441,8 @@
       transform: rotate(45deg);
       border-radius: 4px;
       opacity:.9;
-      animation: fall linear forwards;
-      filter: drop-shadow(0 6px 10px rgba(0,0,0,.18));
+      filter: drop-shadow(0 10px 14px rgba(0,0,0,.18));
+      background: #ff4d8d;
     }
     .drop::before,.drop::after{
       content:"";
@@ -283,10 +455,6 @@
     .drop::before{ left:-7px; top:0 }
     .drop::after{ left:0; top:-7px }
 
-    @keyframes fall{
-      to{ transform: translateY(110vh) rotate(45deg); opacity:0; }
-    }
-
     @media (max-width: 860px){
       .card{ grid-template-columns: 1fr; aspect-ratio:auto; }
       .right{ min-height: 340px; }
@@ -296,13 +464,15 @@
 
 <body>
   <div class="bokeh"></div>
+  <div class="glow"></div>
   <div class="falling" id="falling"></div>
+  <div class="burst" id="burst"></div>
 
   <!-- SCREEN 1 -->
-  <section class="screen active" id="screen1">
-    <div class="hero">
+  <section class="screen active enter" id="screen1">
+    <div class="hero enter">
       <h1 id="qTitle">¿Querés ser mi San Valentín? 💘</h1>
-      <p id="qSub">Abrilo con auriculares si querés más magia ✨</p>
+      <p id="qSub">Te preparé algo re lindo… abrilo con calma ✨</p>
 
       <div class="btns">
         <button class="primary" id="btnYes">Sí 💖</button>
@@ -310,20 +480,24 @@
         <button id="btnNo">No 😭</button>
       </div>
 
-      <p style="margin-top:14px; opacity:.9; font-size:13px">
-        Tip: si tocás “No”, se pone juguetón 😅
-      </p>
+      <div class="tools">
+        <div class="chip" id="fsBtn">⛶ Pantalla completa</div>
+        <div class="chip" id="musicBtnTop">🔊 Música</div>
+      </div>
+
+      <div class="tiny" id="tinyTip">Tip: si tocás “No”, se pone tímido y se escapa 😅</div>
     </div>
   </section>
 
   <!-- SCREEN 2 -->
-  <section class="screen" id="screen2">
-    <main class="card">
+  <section class="screen enter" id="screen2">
+    <main class="card enter">
       <div class="paper-noise"></div>
+      <div class="ribbon"></div>
 
       <div class="topbar">
-        <div class="chip" id="chipName">💌 Para: —</div>
-        <div class="chip chipBtn" id="musicBtn">🔊 Activar música</div>
+        <div class="chip2" id="chipName">💌 Para: —</div>
+        <div class="chip2 chipBtn2" id="musicBtn">🔊 Activar música</div>
       </div>
 
       <section class="left">
@@ -349,24 +523,36 @@
     // =========================
     // CONFIG (EDITÁ ACÁ)
     // =========================
-    const NOMBRE = "Rocio";
-    const START_DATE = "2023-05-30T19:04:00-03:00"; // fecha inicio (Argentina -03)
+    const NOMBRE = "Rocío";
+    const START_DATE = "2023-05-30T19:04:00-03:00"; // 30/05/2023 19:04 Argentina
     const MENSAJE = [
-  `Desde aquel 30 de mayo a las 19:03, cuando nos pusimos de novios,`,
-  "mi vida cambió para siempre.",
-  "",
-  `Desde ese momento supe que eras vos, ${NOMBRE}.`,
-  "Mi lugar seguro, mi paz, mi hogar.",
-  "",
-  "Gracias por elegirme ese día.",
-  "Y gracias por seguir eligiéndome cada día después.",
-  "",
-  "Te amo más de lo que las palabras pueden explicar. 💖"
-].join("\n");
+      "Desde aquel 30 de mayo de 2023 a las 19:04, cuando nos pusimos de novios,",
+      "mi vida cambió para siempre.",
+      "",
+      `Desde ese momento supe que eras vos, ${NOMBRE}.`,
+      "Mi lugar seguro, mi paz, mi hogar.",
+      "",
+      "Gracias por elegirme ese día.",
+      "Y gracias por seguir eligiéndome cada día después.",
+      "",
+      "Te amo más de lo que las palabras pueden explicar. 💖"
+    ].join("\n");
 
+    document.getElementById("qSub").textContent = `${NOMBRE}, tengo algo para vos… 😌`;
 
-    // Texto de pantalla 1 (opcional)
-    document.getElementById("qSub").textContent = `Rocío, tengo algo para vos… 😌`;
+    // Fullscreen
+    const fsBtn = document.getElementById("fsBtn");
+    fsBtn.addEventListener("click", async () => {
+      try{
+        if(!document.fullscreenElement){
+          await document.documentElement.requestFullscreen();
+          fsBtn.textContent = "⛶ Salir pantalla completa";
+        }else{
+          await document.exitFullscreen();
+          fsBtn.textContent = "⛶ Pantalla completa";
+        }
+      }catch(e){}
+    });
 
     // =========================
     // Navegación pantallas
@@ -377,32 +563,40 @@
     function goToLetter(){
       s1.classList.remove("active");
       s2.classList.add("active");
+      burstHearts();
       startEverythingOnce();
     }
 
-    // Botón "No" se escapa (clásico)
+    // Botón "No" se escapa
     const btnNo = document.getElementById("btnNo");
-    btnNo.addEventListener("mouseenter", () => {
-      const dx = (Math.random()*220 - 110);
-      const dy = (Math.random()*160 - 80);
+    const tinyTip = document.getElementById("tinyTip");
+    let noCount = 0;
+
+    function moveNo(){
+      noCount++;
+      const dx = (Math.random()*260 - 130);
+      const dy = (Math.random()*180 - 90);
       btnNo.style.transform = `translate(${dx}px, ${dy}px)`;
-    });
-    btnNo.addEventListener("click", () => {
-      document.getElementById("qTitle").textContent = "Ey 😭 no vale decir que no";
-    });
+      tinyTip.textContent =
+        noCount === 1 ? "Naa 😭 tocá ‘Sí’… dale" :
+        noCount === 2 ? "Bueno… ya entendí 😅 pero igual decí que sí" :
+        "Listo, me rindo… pero el ‘Sí’ te está esperando 💖";
+    }
+    btnNo.addEventListener("mouseenter", moveNo);
+    btnNo.addEventListener("touchstart", (e)=>{ e.preventDefault(); moveNo(); }, {passive:false});
+    btnNo.addEventListener("click", ()=>{ document.getElementById("qTitle").textContent = "No acepto un no 😌"; });
 
     document.getElementById("btnYes").addEventListener("click", goToLetter);
     document.getElementById("btnObvio").addEventListener("click", goToLetter);
 
     // =========================
-    // Carta: typewriter + contador + árbol + corazones
+    // Carta: typewriter + contador + árbol + efectos
     // =========================
     let started = false;
     function startEverythingOnce(){
       if(started) return;
       started = true;
 
-      // Nombre arriba
       document.getElementById("chipName").textContent = `💌 Para: ${NOMBRE}`;
 
       // Typewriter
@@ -414,11 +608,13 @@
       let i = 0;
       function type(){
         if(i <= MENSAJE.length){
-          typedEl.textContent = MENSAJE.slice(0,i);
+          let part = MENSAJE.slice(0,i).replaceAll(NOMBRE, `**${NOMBRE}**`);
+          typedEl.innerHTML = part.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
           typedEl.appendChild(cursor);
+
           const ch = MENSAJE[i] || "";
           i++;
-          const delay = ch === "\n" ? 420 : (ch === "," ? 220 : 28);
+          const delay = ch === "\n" ? 430 : (ch === "," ? 220 : 26);
           setTimeout(type, delay);
         }
       }
@@ -431,95 +627,194 @@
 
       function tick(){
         const now = Date.now();
-        let diff = Math.max(0, now - start);
-
+        const diff = Math.max(0, now - start);
         const s = Math.floor(diff/1000);
         const days = Math.floor(s / 86400);
         const hours = Math.floor((s % 86400) / 3600);
         const mins = Math.floor((s % 3600) / 60);
         const secs = s % 60;
-
         timeEl.textContent = `${days} días ${pad(hours)} horas ${pad(mins)} minutos ${pad(secs)} segundos`;
       }
       tick();
       setInterval(tick, 1000);
 
-      // Árbol copa corazón
+      // Árbol copa corazón + profundidad
       const canopy = document.getElementById("canopy");
+
       function heartXY(t){
         const x = 16 * Math.pow(Math.sin(t), 3);
         const y = 13*Math.cos(t) - 5*Math.cos(2*t) - 2*Math.cos(3*t) - Math.cos(4*t);
         return {x, y};
       }
+
       function addLeaf(x, y, color, delay){
         const leaf = document.createElement("div");
         leaf.className = "leaf";
         leaf.style.setProperty("--c", color);
         leaf.style.left = `${50 + x}%`;
-        leaf.style.top = `${50 - y}%`;
+        leaf.style.top  = `${50 - y}%`;
         leaf.style.animationDelay = `${delay}ms`;
-        leaf.style.opacity = (0.75 + Math.random()*0.25).toFixed(2);
-        leaf.style.width = leaf.style.height = `${12 + Math.random()*16}px`;
+
+        // profundidad (más 3D)
+        const depth = Math.random();
+        leaf.style.filter = `blur(${depth < 0.25 ? 0.7 : 0}px)`;
+        leaf.style.zIndex = depth < 0.25 ? "1" : "2";
+        leaf.style.opacity = (depth < 0.25 ? 0.70 : 0.95).toFixed(2);
+
+        const size = 12 + Math.random()*18;
+        leaf.style.width = leaf.style.height = `${size}px`;
+
         canopy.appendChild(leaf);
       }
 
-      const colors = ["#ff2f6d","#ff4d8d","#ff6aa8","#ff2a3a","#ffd1dc"];
+      const colors = ["#ff2f6d","#ff4d8d","#ff6aa8","#ff2a3a","#ffd1dc","#ff8fb3"];
       let k = 0;
 
       // contorno
       for(let t=0; t<Math.PI*2; t+=0.08){
         const p = heartXY(t);
-        addLeaf(p.x*2.1, p.y*1.8, colors[Math.floor(Math.random()*colors.length)], k*18);
+        addLeaf(p.x*2.12, p.y*1.82, colors[(Math.random()*colors.length)|0], k*16);
         k++;
       }
       // relleno
-      for(let n=0; n<140; n++){
+      for(let n=0; n<170; n++){
         const t = Math.random()*Math.PI*2;
         const p = heartXY(t);
         const r = Math.random();
-        addLeaf(p.x*2.1*r, p.y*1.8*r, colors[Math.floor(Math.random()*colors.length)], k*10);
+        addLeaf(p.x*2.12*r, p.y*1.82*r, colors[(Math.random()*colors.length)|0], k*9);
         k++;
       }
 
-      // falling hearts (global)
-      const falling = document.getElementById("falling");
-      function spawnDrop(){
-        const d = document.createElement("div");
-        d.className = "drop";
-        const size = 8 + Math.random()*14;
-        d.style.width = d.style.height = size + "px";
-        d.style.left = (Math.random()*100) + "vw";
-
-        const hue = Math.random();
-        d.style.background = hue < .25 ? "#ff2f6d" : hue < .5 ? "#ff4d8d" : hue < .75 ? "#ff6aa8" : "#ffd1dc";
-
-        const dur = 4.5 + Math.random()*4.5;
-        d.style.animationDuration = dur + "s";
-        falling.appendChild(d);
-
-        // drift
-        const sway = (Math.random()*120 - 60);
-        d.animate([
-          { transform:`translate(0,0) rotate(45deg)` },
-          { transform:`translate(${sway}px,110vh) rotate(45deg)` }
-        ], { duration: dur*1000, easing:"linear", fill:"forwards" });
-
-        setTimeout(()=> d.remove(), (dur+0.6)*1000);
+      // Lucecitas (fairy lights)
+      function addTwinkle(x, y, delay){
+        const t = document.createElement("div");
+        t.className = "twinkle";
+        t.style.left = `${x}%`;
+        t.style.top  = `${y}%`;
+        t.style.animationDelay = `${delay}s`;
+        t.style.animationDuration = `${1.8 + Math.random()*2.2}s`;
+        canopy.appendChild(t);
       }
-      setInterval(spawnDrop, 180);
+      for(let j=0; j<26; j++){
+        const x = 50 + (Math.random()*62 - 31);
+        const y = 50 + (Math.random()*54 - 27);
+        addTwinkle(x, y, Math.random()*2.5);
+      }
 
-      // Música (beep suave)
+      // Sparkles suaves
+      function spawnSpark(){
+        const s = document.createElement("div");
+        s.className = "spark";
+        s.style.left = `${20 + Math.random()*60}%`;
+        s.style.top  = `${18 + Math.random()*62}%`;
+        canopy.appendChild(s);
+
+        const dur = 700 + Math.random()*900;
+        s.animate([
+          { opacity: 0, transform: "translate(-50%,-50%) scale(.6)" },
+          { opacity: 1, transform: "translate(-50%,-50%) scale(1.15)", offset: .35 },
+          { opacity: 0, transform: "translate(-50%,-50%) scale(.9)" }
+        ], { duration: dur, easing: "ease-in-out", fill:"forwards" });
+
+        setTimeout(()=> s.remove(), dur+60);
+      }
+      setInterval(spawnSpark, 520);
+
+      // Corazones cayendo + música
+      startFalling();
       setupMusic();
     }
 
     // =========================
-    // Música (opcional, sin archivos)
+    // Falling hearts (suave)
+    // =========================
+    let fallingStarted = false;
+    function startFalling(){
+      if(fallingStarted) return;
+      fallingStarted = true;
+
+      const falling = document.getElementById("falling");
+      function spawnDrop(){
+        const d = document.createElement("div");
+        d.className = "drop";
+
+        const size = 9 + Math.random()*14;
+        d.style.width = d.style.height = size + "px";
+        d.style.left = (Math.random()*100) + "vw";
+
+        const hue = Math.random();
+        const c = hue < .22 ? "#ff2f6d" : hue < .45 ? "#ff4d8d" : hue < .7 ? "#ff6aa8" : hue < .88 ? "#ffd1dc" : "#ffffff";
+        d.style.background = c;
+
+        falling.appendChild(d);
+
+        const dur = 5.0 + Math.random()*5.5;
+        const startY = -40;
+        const endY = window.innerHeight + 80;
+        const sway = (Math.random()*140 - 70);
+
+        d.animate([
+          { transform:`translate(0, ${startY}px) rotate(45deg)` },
+          { transform:`translate(${sway}px, ${endY}px) rotate(45deg)` }
+        ], { duration: dur*1000, easing:"linear", fill:"forwards" });
+
+        d.animate([{opacity:0},{opacity:.9},{opacity:.9},{opacity:0}], {
+          duration: dur*1000,
+          easing:"linear",
+          fill:"forwards",
+          offset: [0, .12, .86, 1]
+        });
+
+        setTimeout(()=> d.remove(), (dur+0.3)*1000);
+      }
+      setInterval(spawnDrop, 160);
+    }
+
+    // =========================
+    // Burst hearts al aceptar
+    // =========================
+    function burstHearts(){
+      const burst = document.getElementById("burst");
+      for(let i=0;i<36;i++){
+        const h = document.createElement("div");
+        h.className = "drop";
+        h.style.position = "absolute";
+        h.style.left = "50%";
+        h.style.top = "55%";
+
+        const size = 10 + Math.random()*16;
+        h.style.width = h.style.height = size + "px";
+
+        const palette = ["#ff2f6d","#ff4d8d","#ff6aa8","#ffd1dc","#ffffff"];
+        h.style.background = palette[(Math.random()*palette.length)|0];
+
+        burst.appendChild(h);
+
+        const angle = Math.random()*Math.PI*2;
+        const dist = 180 + Math.random()*260;
+        const dx = Math.cos(angle)*dist;
+        const dy = Math.sin(angle)*dist * 0.9;
+
+        const dur = 900 + Math.random()*700;
+        h.animate([
+          { transform:"translate(-50%,-50%) rotate(45deg) scale(1)", opacity: 0.0 },
+          { transform:"translate(-50%,-50%) rotate(45deg) scale(1)", opacity: 1.0, offset: .12 },
+          { transform:`translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) rotate(45deg) scale(.9)`, opacity: 0.0 }
+        ], { duration: dur, easing:"cubic-bezier(.2,.8,.2,1)", fill:"forwards" });
+
+        setTimeout(()=> h.remove(), dur+50);
+      }
+    }
+
+    // =========================
+    // Música (opcional)
     // =========================
     let audioCtx, playing=false, osc, gain;
     const musicBtn = document.getElementById("musicBtn");
+    const musicBtnTop = document.getElementById("musicBtnTop");
 
-    function setupMusic(){
-      musicBtn.addEventListener("click", async () => {
+    function toggleMusic(){
+      (async ()=>{
         if(!audioCtx){
           audioCtx = new (window.AudioContext || window.webkitAudioContext)();
           gain = audioCtx.createGain();
@@ -535,15 +830,22 @@
         if(audioCtx.state === "suspended") await audioCtx.resume();
 
         playing = !playing;
-        musicBtn.textContent = playing ? "🔇 Pausar música" : "🔊 Activar música";
+        const label = playing ? "🔇 Pausar música" : "🔊 Activar música";
+        if(musicBtn) musicBtn.textContent = label;
+        if(musicBtnTop) musicBtnTop.textContent = playing ? "🔇 Música" : "🔊 Música";
 
-        // fade suave
         const now = audioCtx.currentTime;
         gain.gain.cancelScheduledValues(now);
         gain.gain.setValueAtTime(gain.gain.value, now);
-        gain.gain.linearRampToValueAtTime(playing ? 0.03 : 0.0001, now + 0.3);
-      });
+        gain.gain.linearRampToValueAtTime(playing ? 0.03 : 0.0001, now + 0.35);
+      })();
     }
+
+    function setupMusic(){
+      musicBtn?.addEventListener("click", toggleMusic);
+      musicBtnTop?.addEventListener("click", toggleMusic);
+    }
+    setupMusic();
   </script>
 </body>
 </html>
